@@ -1,0 +1,82 @@
+      INCLUDE 'PARAM.H' 
+      
+      COMMON/DIM/N1,N2,N3,N1M,N2M,N3M
+      COMMON/MESH1/DX1,DX1Q,DX3,DX3Q
+      COMMON/MESH2/Y(0:M2)
+      COMMON/MESH3/DY(0:M2),H(M2),HM(M2),HC(M2),HP(M2)
+      COMMON/MESH4/DYM(M2),DYC(M2),DYP(M2)
+      COMMON/SIZE/ALX,ALY,ALZ,VOL
+      COMMON/FILENAME/FILEINI,FILEGRD,FILEOUT,FILEAVG
+
+      COMMON/MESH02/ XG(0:M1),YG(0:M2),ZG(0:M3),
+     >	           XC(0:M1),YC(0:M2),ZC(0:M3)
+
+      COMMON/PARA/RE
+      COMMON/SIZESCALE/HHH
+      
+      COMMON/FINOUT/INCODE,IDTOPT,NWRITE,NREAD,IAVG,NPRN,INSF,NINS,FILES
+      COMMON/TSTEP/NTST,DT,CFLMAX
+      
+     
+C************************ CFL,ERR_DIV ************************************
+      REAL CFL_MAX_MY,CFL_MAX
+      COMMON/CFL_TEST/ CFL_MAX_MY,CFL_MAX
+
+
+
+C-----Channel --------------------------------------------------------------
+      REAL Uc,Utau_cha,VPER
+	COMMON/CHA01/ Uc,Utau_cha,VPER
+	COMMON/CHA02/ Flow_INX
+      COMMON/WSMEM/WSM(3),WSMO(3)
+
+
+**************对流场做空间、时间平均*************************************
+      REAL Tavg,Tintv,Tstat,QQ,ETA
+	REAL UMEAN,UMS,PMEAN
+	REAL UTAU_wall,TAUW_wall
+      COMMON/MEANFIELD01/ Tavg,Tintv,Tstat,QQ,ETA
+	COMMON/MEANFIELD02/ UMEAN(M2,3),UMS(M2,4),PMEAN(M1,M2,3)
+	COMMON/MEANFIELD03/ UTAU_wall(2),TAUW_wall(2)
+
+
+*************GET PARTICLES**********************************************
+      Real    Mass_P,STRPAR
+	Parameter (NP_max=100)
+      Common/PAR0/ STRPAR,Tstat_P
+      Common/PAR1/ IFPAR,Nstep_P,Nprint_P,NTIMEP ! INIT_P,
+      Common/PAR2/ PAR(1:6,NP_max),Index_par(1:3,NP_max)
+      Common/PAR3/ Dens_P,Diam_P,Mass_P,DT_P
+      Common/PAR4/ TAU_P,St
+      COMMON/INITPARTICLE/Init_P
+      Common/PAR5/ C0
+      Common/PAR6/ Index_cav(NP_max),N_cav
+c 1-W,2-E,3-S,4-N
+      Common/PAR8/ NP_all,N_max,NP_max_BC,CFL_P_max,N_PAR
+      Common/PAR9/ NP_impact,NP_eject
+C Two-way coupling 
+      Common/PAR10/C_par(M1,M2,M3)
+      INTEGER NMP
+
+        !    COMMON/TSTEP/NTST,DT,CFLMAX,TH
+!PARTICLE AVE
+
+	Real      Cm1, Crms1
+	Real      Um1, Urms1
+	Real      Vm1, Vrms1
+	Real      Wm1, Wrms1
+	Real      Qm1, Qrms1
+	Real      Wxm1, Wxrms1
+	Real      UPm1, UPrms1
+	Real      VPm1, VPrms1
+	Real      WPm1, WPrms1
+	
+	Real     UPVP1, VPWP1, UPWP1
+	
+      INTEGER FLAGPAR
+      COMMON/FLOWAVE/Cm1(M2),Um1(M2),Vm1(M2),Wm1(M2),Qm1(M2),Wxm1(M2)
+      COMMON/PARAVE/Num_par_K1(M2),UPm1(M2),VPm1(M2),WPm1(M2)
+      COMMON/FLOWRMS/Urms1(M2),Vrms1(M2),Wrms1(M2),Qrms1(M2),Wxrms1(M2)
+      COMMON/PARRMS1/Crms1(M2),UPrms1(M2),VPrms1(M2),WPrms1(M2)
+      COMMON/PARRMS2/UPVP1(M2),VPWP1(M2),UPWP1(M2)
+      COMMON/PARRMS3/FLAGPAR
